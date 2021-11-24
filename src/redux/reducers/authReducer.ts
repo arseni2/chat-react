@@ -10,7 +10,6 @@ export type userType = {
     _id: string
     avatar: string
     last_seen: string
-    password: string
     name: string
     lastname: string
 }
@@ -21,7 +20,7 @@ type initialStateType = {
 }
 
 const initialState: initialStateType = {
-    isAuth: true,
+    isAuth: false,
     condition: AppCondition.loading,
     user: {}
 }

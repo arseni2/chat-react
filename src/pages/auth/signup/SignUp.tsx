@@ -11,7 +11,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppDispatchType, AppStateType} from "../../../redux/store";
 import {UserLoginCondition} from "../../../redux/reducers/loginReducer";
 import {useIsAuthRedirect} from "../../../service/HOOKS/hooks";
-import {getAuthReducerCondition} from "../../../redux/selectors/signInSelectors";
+import {getAuthReducerCondition} from "../../../redux/selectors/selectors";
 import FieldComponent from "../../../components/signUp/FieldComponent";
 
 

@@ -2,9 +2,10 @@ import { configureStore } from '@reduxjs/toolkit'
 import {login_reducer} from "./reducers/loginReducer";
 import {AuthReducer} from "./reducers/authReducer";
 import {register_reducer} from "./reducers/registerReducer";
+import {UsersReducer} from "./reducers/usersReducer";
 
 export const store = configureStore({
-    reducer: {login_reducer, AuthReducer, register_reducer},
+    reducer: {login_reducer, AuthReducer, register_reducer, UsersReducer}, //make rename
 })
 //@ts-ignore
 window.store = store

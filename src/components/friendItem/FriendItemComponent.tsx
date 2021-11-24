@@ -1,6 +1,7 @@
 import React from 'react';
 import {Avatar, Divider, Grid, Typography} from "@mui/material";
 import {makeStyles} from "@mui/styles";
+import {userType} from "../../redux/reducers/authReducer";
 
 
 const useStyles = makeStyles((theme)=>({
@@ -26,18 +27,21 @@ const useStyles = makeStyles((theme)=>({
                 background: '#eaeaea'
             },
             cursor: 'pointer',
-        }
+        },
     }
 ))
-const FriendItemComponent = () => {
+function hasWhiteSpace(s: string) {
+    return s.indexOf(' ') >= 0;
+}// вынести куда-нибудь
+const FriendItemComponent = (props: userType) => {
     const classes = useStyles()
     return (
         <Grid className={classes.container}>
             <Divider style={{marginBottom: 5}}/>
             <Grid style={{display: 'flex'}}>
                 <Grid>
-                    <Avatar style={{width: 50, height: 50}}>
-                        gg
+                    <Avatar src={hasWhiteSpace(props.avatar) ? 'default image' : 'url to image'} style={{width: 50, height: 50}}>
+
                     </Avatar>
                 </Grid>
 
@@ -45,7 +49,7 @@ const FriendItemComponent = () => {
                     <Grid marginLeft={1}>
                         <Typography>
                             <p className={classes.message_name}>
-                                Egor Piros
+                                {props.name}
                             </p>
                         </Typography>
                         <Typography className={classes.message_text}>

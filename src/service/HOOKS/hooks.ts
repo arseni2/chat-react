@@ -1,5 +1,5 @@
 import {useSelector} from "react-redux";
-import {getAuth} from "../../redux/selectors/signInSelectors";
+import {getAuth} from "../../redux/selectors/selectors";
 import {useHistory} from "react-router-dom";
 import {AppDispatchType} from "../../redux/store";
 import {useEffect} from "react";

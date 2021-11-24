@@ -12,15 +12,17 @@ import {AppStateType} from "./redux/store";
 
 
 //TODO:
-    //1. написать вывод динамической пагинацией всех пользователей
-    //2. сделать поиск юзеров debouncing
+    //1. сделать поиск юзеров debouncing, на серваке отдавать пользователей пагинацией
+
+    //2. поправить на серваке last_seen
 //MORE:
-//1. написать выборку картинок с превью как тут https://www.youtube.com/watch?v=5vx2PVClSVU
-//2. попробовать порешать алгоритмическе задачи на кодварсе и других платформах
-//3. при регистрации выводить имя картинки и имя файла
-//4. сделать рефакторинг SignUp.tsx
+    //1. написать выборку картинок с превью как тут https://www.youtube.com/watch?v=5vx2PVClSVU
+    //2. попробовать порешать алгоритмическе задачи на кодварсе и других платформах
+    //3. при регистрации выводить имя картинки и имя файла
+    //4. сделать рефакторинг SignUp.tsx
+    //5 сделать loader когда загружаютя иконки пользователей
 //PLANS:
-//1. using redux-toolkit
+
 //CONST:
 //1. смотреть заметку в evernote chatapp
 const CoomingSoon = React.lazy(() => import('./components/coomingSoon/CoomingSoon'));
@@ -30,7 +32,7 @@ function App() {
     const isAuth = useSelector((state: AppStateType) => state.AuthReducer.isAuth)
     return (
         <div>
-                {isAuth
+                {true //isAuth
                     && <>
                         <Route path={['/chats', '/new_chat', '/profile', '/settings']} render={() => {
                             return <Home/>

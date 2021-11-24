@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatchType} from "../../../redux/store";
 import {loginThunk, UserLoginCondition} from "../../../redux/reducers/loginReducer";
-import {getAuthReducerCondition, getCondition, getError} from "../../../redux/selectors/signInSelectors";
+import {getAuthReducerCondition, getCondition, getError} from "../../../redux/selectors/selectors";
 import {useIsAuthRedirect} from "../../../service/HOOKS/hooks";
 import FieldComponent from "../../../components/signUp/FieldComponent";
 
