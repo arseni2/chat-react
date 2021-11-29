@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Grid, InputAdornment, TextField} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import {makeStyles} from "@mui/styles";
 import {TextFieldProps} from "@mui/material/TextField/TextField";
+import _ from 'lodash';
 
 const useStyles = makeStyles({
     message_input: {
@@ -17,11 +18,15 @@ const useStyles = makeStyles({
 })
 
 const SearchInputComponent = (props: TextFieldProps) => {
+    const [value, setValue] = useState('')
+    let setValueDebounced = _.debounce(setValue, 500)
+    //@ts-ignore
+    props.onDebouncingChange && props.onDebouncingChange(value)
     const classes = useStyles()
     return (
         <Grid style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
             <TextField
-                placeholder={'Search message...'}
+                placeholder={props.placeholder}
                 {...props}
                 className={classes.message_input}
                 inputProps={{
@@ -34,6 +39,7 @@ const SearchInputComponent = (props: TextFieldProps) => {
                     },
 
                 }}
+                onChange={(e)=>{setValueDebounced(e.target.value)}}
                 InputProps={{
                     startAdornment: (
                         <InputAdornment position="start">

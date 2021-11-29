@@ -5,7 +5,7 @@ import {AxiosResponse} from "axios";
 import {UserLoginCondition} from "./loginReducer";
 
 type initialStateType = {
-    users: Array<userType>
+    users: Array<userType> 
     condition: UserLoginCondition
     error: string | null
     hasNextPage: boolean
@@ -31,7 +31,11 @@ export const usersPaginationThunk = createAsyncThunk('users/pagination', async (
 export const usersSlice = createSlice({
     initialState,
     name: "users-reducer",
-    reducers: {},
+    reducers: {
+        set_user: (state) => {
+            state.users = []
+        }
+    },
     extraReducers: {
         [usersPaginationThunk.fulfilled.type]: (state, action: PayloadAction<userPaginationData>) => {
             state.users = [...state.users, ...action.payload.docs]
@@ -49,4 +53,6 @@ export const usersSlice = createSlice({
         }
     }
 })
+export const {set_user} = usersSlice.actions
+
 export const UsersReducer = usersSlice.reducer

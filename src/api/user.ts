@@ -16,7 +16,7 @@ export type userPaginationData = {
 export type userPaginationDataPayload = {
     page: number
 }
-export const getUsers = (payload: userPaginationDataPayload) => {
+export const getUsers = (payload: userPaginationDataPayload): Promise<userPaginationData> => {
     return instance.get<userPaginationData>(`/user/all?page=${payload.page}`).then(res => res.data)
 }
 

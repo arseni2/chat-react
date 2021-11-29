@@ -1,46 +1,24 @@
-import React, {useEffect, useState} from 'react';
-import {CircularProgress, Grid} from "@mui/material";
-import SearchInputComponent from "../../../components/searchInput/SearchInputComponent";
+import { CircularProgress, Grid } from "@mui/material";
+import React from 'react';
+import { useSelector } from "react-redux";
 import FriendItemComponent from "../../../components/friendItem/FriendItemComponent";
-import {usersPaginationThunk} from "../../../redux/reducers/usersReducer";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatchType} from "../../../redux/store";
-import {getUsers, getUsersCondition, getUsersPaginationTotalCount} from "../../../redux/selectors/selectors";
-import {UserLoginCondition} from "../../../redux/reducers/loginReducer";
+import SearchInputComponent from "../../../components/searchInput/SearchInputComponent";
+import { UserLoginCondition } from "../../../redux/reducers/loginReducer";
+import { getUsersCondition } from "../../../redux/selectors/selectors";
+import { useUsersInfiniteScroll } from "../../../service/HOOKS/hooks";
 
-const NewChats = () => {
-    const totalCount = useSelector(getUsersPaginationTotalCount)
+
+const NewChats = () => {  
     const condition = useSelector(getUsersCondition)
-    const users = useSelector(getUsers)
-    const dispatch = useDispatch<AppDispatchType>()
-    const [fetching, setFetching] = useState(false)
-    const [page, setPage] = useState(1)
-    const scrollHandler = (e: any) => {
-        if (e.target.documentElement.scrollHeight - (window.innerHeight + e.target.documentElement.scrollTop) < 200 && users.length < totalCount && condition !== UserLoginCondition.loading ) {
-            setFetching(true)
-        }
-    }
-    useEffect(() => {
-        document.addEventListener('scroll', scrollHandler)
-        return () => {
-            document.removeEventListener('scroll', scrollHandler)
-        }
-        //eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [totalCount, users, condition])
-    useEffect(() => {
-        dispatch(usersPaginationThunk({page: page}))
-        setPage((prevState => prevState + 1))
-        setFetching(false)
-        //eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [fetching])
+    let users = useUsersInfiniteScroll(condition) 
     return (
-        <Grid style={{marginLeft: 240}} onScroll={(e) => {
-        }}>
-            <SearchInputComponent placeholder={'Search users...'}/>
-            {users.map((user, i) => {
-                return <FriendItemComponent key={i} {...user} />
-            })}
-            {condition === UserLoginCondition.loading && <CircularProgress />}
+        <Grid style={{ marginLeft: 240 }}>
+            <SearchInputComponent placeholder={'Search users...'} />
+            {users.length === 0 ? <CircularProgress /> :
+                users.map((user, i) => {
+                    return <FriendItemComponent key={i} {...user} />
+                })}
+                {condition === UserLoginCondition.loading && users.length !== 0 && <CircularProgress />}
         </Grid>
     );
 };

@@ -7,9 +7,7 @@ import SearchInputComponent from "../../../components/searchInput/SearchInputCom
 const Messages = () => {
     return (
         <Grid style={{marginLeft: 240}}>
-            <SearchInputComponent onChange={(e)=>{
-                console.log(e.target.value)
-            }}/>
+            <SearchInputComponent placeholder='Search messages...' />
             <Divider sx={{marginTop: 1}} />
             <MessageItem />
             <MessageItem />
