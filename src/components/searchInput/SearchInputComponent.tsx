@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import {Grid, InputAdornment, TextField} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import {makeStyles} from "@mui/styles";
-import {TextFieldProps} from "@mui/material/TextField/TextField";
-import _ from 'lodash';
+import { Grid, InputAdornment, TextField } from "@mui/material";
+import { TextFieldProps } from "@mui/material/TextField/TextField";
+import { makeStyles } from "@mui/styles";
+import lodash from 'lodash';
+import React, { useState } from 'react';
+import { useQuery } from "../../service/HOOKS/hooks";
 
 const useStyles = makeStyles({
     message_input: {
@@ -18,8 +19,9 @@ const useStyles = makeStyles({
 })
 
 const SearchInputComponent = (props: TextFieldProps) => {
+    const query = useQuery()
     const [value, setValue] = useState('')
-    let setValueDebounced = _.debounce(setValue, 500)
+    let setValueDebounced = lodash.debounce(setValue, 350)
     //@ts-ignore
     props.onDebouncingChange && props.onDebouncingChange(value)
     const classes = useStyles()

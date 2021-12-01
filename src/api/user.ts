@@ -19,4 +19,9 @@ export type userPaginationDataPayload = {
 export const getUsers = (payload: userPaginationDataPayload): Promise<userPaginationData> => {
     return instance.get<userPaginationData>(`/user/all?page=${payload.page}`).then(res => res.data)
 }
+export type usersPaginationSearchType = userPaginationDataPayload & {q: string}
+
+export const getUsersSearch = (payload: usersPaginationSearchType) => {
+    return instance.get<userPaginationData>(`/user/search?page=${payload.page}&q=${payload.q}`).then(res => res.data)
+}
 
