@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
-import { getUsers, getUsersSearch, userPaginationData, userPaginationDataPayload, usersPaginationSearchType } from "../../api/user";
+import { getUsersSearch, userPaginationData, usersPaginationSearchType } from "../../api/user";
 import { set_auth, userType } from "./authReducer";
 import { UserLoginCondition } from "./loginReducer";
 

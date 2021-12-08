@@ -1,7 +1,9 @@
+import { Avatar, Divider, Grid, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import React from 'react';
-import {Avatar, Divider, Grid, Typography} from "@mui/material";
-import {makeStyles} from "@mui/styles";
-import {NavLink} from 'react-router-dom'
+import { NavLink } from 'react-router-dom';
+import { dialogType } from '../../api/dialog';
+import { DateOutputComponent } from "./dateOutputComponent";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -33,10 +35,10 @@ const useStyles = makeStyles((theme) => ({
     }
 ))
 
-const MessageItem = () => {
+const MessageItem = (props: dialogType) => {
     const classes = useStyles()
     return (
-        <NavLink to={`/chats/11`}>
+        <NavLink to={`/chats/${props._id}`}>
             <Grid className={classes.container}>
                 <Divider style={{marginBottom: 5}}/>
                 <Grid style={{display: 'flex'}}>
@@ -50,7 +52,7 @@ const MessageItem = () => {
                         <Grid marginLeft={1}>
                             <Typography>
                                 <p className={classes.message_name}>
-                                    Egor Piros
+                                    {props.partner && props.partner.name}
                                 </p>
                             </Typography>
                             <Typography className={classes.message_text}>
@@ -60,7 +62,7 @@ const MessageItem = () => {
 
                         <Grid>
                             <Typography className={classes.message_time}>
-                                00:00
+                                <DateOutputComponent date={props.updatedAt} />
                             </Typography>
                         </Grid>
                     </Grid>

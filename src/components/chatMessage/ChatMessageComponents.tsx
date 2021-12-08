@@ -1,6 +1,8 @@
 import {Avatar, Grid, Typography} from '@mui/material';
 import React from 'react';
 import {makeStyles} from "@mui/styles";
+import {messageType} from "../../api/message";
+import {hasWhiteSpace} from "../friendItem/FriendItemComponent";
 
 const useStyles = makeStyles({
     message: {
@@ -34,30 +36,33 @@ const useStyles = makeStyles({
     }
 })
 
-const ChatMessageComponents = (props: any) => {
+const ChatMessageComponents = React.memo((props: messageType) => {
     const classes = useStyles()
     return (
         <Grid className={classes.message}>
             <Grid>
-                <Avatar sx={{width: 50, height: 50}}>
-                    gg
-                </Avatar>
+                <Avatar
+                    src={hasWhiteSpace(props.author.avatar) ? 'default image' : `http://localhost:8000/uploads/userImages/${props.author.avatar}`}
+                    style={{
+                        width: 50,
+                        height: 50
+                    }}/>
             </Grid>
             <Grid style={{marginLeft: 10, width: 400}}>
                 <Grid className={classes.message_user}>
                     <p className={classes.message_user_name}>
-                        Egor Piros
+                        {props.author.name}
                     </p>
                     <Typography className={classes.message_time}>
-                        00:00
+                        {props.updateAt}
                     </Typography>
                 </Grid>
                 <p className={classes.message_item_container_text}>
-                    gello ggg hahahahha gello ggg hahahahha gello ggg hahahahha gello ggg hahahahha gello ggg hahahahha gello ggg hahahahha gello ggg hahahahha gello ggg hahahahha gello ggg hahahahha gello ggg hahahahha gello ggg hahahahha gello ggg hahahahha
+                    {props.text}
                 </p>
             </Grid>
         </Grid>
     )
-}
+})
 
 export default ChatMessageComponents;

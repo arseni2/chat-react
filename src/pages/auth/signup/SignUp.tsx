@@ -13,6 +13,7 @@ import {UserLoginCondition} from "../../../redux/reducers/loginReducer";
 import {useIsAuthRedirect} from "../../../service/HOOKS/hooks";
 import {getAuthReducerCondition} from "../../../redux/selectors/selectors";
 import FieldComponent from "../../../components/signUp/FieldComponent";
+import {getErrorRegister, getConditionRegister} from '../../../redux/selectors/selectors'
 
 
 const useStyles = makeStyles({
@@ -57,8 +58,8 @@ const SignUp = () => {
     useIsAuthRedirect(dispatch)
     const [file, setFile] = useState<FileList | null>(null)
     const classes = useStyles()
-    const condition = useSelector((state: AppStateType) => state.register_reducer.condition)
-    const error = useSelector((state: AppStateType) => state.register_reducer.error)
+    const condition = useSelector(getConditionRegister) //если будет ошибка то мб проблема тут
+    const error = useSelector(getErrorRegister) //если будет ошибка то мб проблема тут
     if(conditionAuth === 'loading') {
         return <CircularProgress />
     }

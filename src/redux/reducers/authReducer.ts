@@ -12,6 +12,7 @@ export type userType = {
     last_seen: string
     name: string
     lastname: string
+    isOnline: boolean
 }
 type initialStateType = {
     condition: AppCondition

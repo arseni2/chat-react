@@ -5,6 +5,18 @@ import {useHistory, useParams} from "react-router-dom";
 import {makeStyles} from "@mui/styles";
 import ChatMessageComponents from "../../../components/chatMessage/ChatMessageComponents";
 import ImageIcon from '@mui/icons-material/Image';
+import {io} from 'socket.io-client'
+import {useDispatch, useSelector} from 'react-redux';
+import {getDialogDetailThunk} from '../../../redux/reducers/dialogReducer';
+import {AppDispatchType} from '../../../redux/store'
+import {getDialogDetail, getMessageChat} from "../../../redux/selectors/selectors";
+import {OnlineComponent} from "../../../components/online/OnlineComponent";
+import {hasWhiteSpace} from "../../../components/friendItem/FriendItemComponent";
+import {add_message, createMessageThunk, getMessagesThunk} from "../../../redux/reducers/chatReducer";
+import {messageType} from "../../../api/message";
+
+;
+
 
 type UrlParamsType = {
     id: string
@@ -49,10 +61,26 @@ const useStyles = makeStyles({
 })
 export type imageInputType = FileList | null
 const Chat = (props: any) => {
+    let {id}: UrlParamsType = useParams()
+    console.log('id = ', id)
+    const dispatch = useDispatch<AppDispatchType>()
+    React.useEffect(()=>{
+        dispatch(getMessagesThunk({dialog_id: id}))
+        dispatch(getDialogDetailThunk({id}))
+    }, [])
+    const messages = useSelector(getMessageChat)
+    const dialog = useSelector(getDialogDetail)
     const [text, setText] = useState('')
     const classes = useStyles()
     const history = useHistory()
-    let {id}: UrlParamsType = useParams()
+    React.useEffect(() => {
+        const socket = io('http://localhost:8000', {
+            withCredentials: true,
+        })
+        socket.on('add message', (data: { message: messageType }) => {
+                dispatch(add_message(data.message))
+        })
+    }, [])
     return (
         <Grid style={{marginLeft: 232}}>
             <Grid className={classes.header}>
@@ -64,39 +92,27 @@ const Chat = (props: any) => {
                     </IconButton>
                 </Grid>
                 <Grid className={classes.header_user}>
-                    <Avatar style={{width: 50, height: 50}}>
-                        gg
-                    </Avatar>
+                    <Avatar
+                        src={hasWhiteSpace(dialog && dialog.partner.avatar) ? 'default image' : `http://localhost:8000/uploads/userImages/${dialog && dialog.partner.avatar}`}
+                        style={{
+                            width: 50,
+                            height: 50
+                        }}/>
                     <Grid className={classes.header_user_info}>
                         <p className={classes.header_user_name}>
-                            Egor Piros
+                            {dialog && dialog.partner.name}
                         </p>
                         <Typography className={classes.header_user_status}>
-                            online
-                            <div style={{
-                                width: 7,
-                                height: 7,
-                                background: '#42FF00',
-                                marginLeft: 10,
-                                borderRadius: 100
-                            }}></div>
+                            <OnlineComponent isOnline={dialog && dialog.partner.isOnline}/>
                         </Typography>
                     </Grid>
                 </Grid>
             </Grid>
             <Divider/>
             <Grid style={{paddingBottom: 100}}>
-                <ChatMessageComponents/>
-                <ChatMessageComponents/>
-                <ChatMessageComponents/>
-                <ChatMessageComponents/>
-                <ChatMessageComponents/>
-                <ChatMessageComponents/>
-                <ChatMessageComponents/>
-                <ChatMessageComponents/>
-                <ChatMessageComponents/>
-                <ChatMessageComponents/>
-                <ChatMessageComponents/>
+                {messages.map((message, i) => {
+                    return <ChatMessageComponents {...message} />
+                })}
             </Grid>
             <Grid style={{marginTop: 50}} sx={{position: 'sticky'}}>
 
@@ -115,10 +131,14 @@ const Chat = (props: any) => {
                                    </InputAdornment>
                                ),
                            }}
-                           onChange={(e)=>{setText(e.target.value)}}
-                           onKeyDown={(e)=>{
-                               if(e.key === 'Enter'){
-                                   console.log('value',text);
+                           onChange={(e) => {
+                               setText(e.target.value)
+                           }}
+                           onKeyDown={(e) => {
+                               if (e.key === 'Enter' &&  text) {
+                                   console.log('enter')
+                                   dispatch(createMessageThunk({text, dialog_id: id}))
+                                   setText('')
                                }
                            }}
                 />

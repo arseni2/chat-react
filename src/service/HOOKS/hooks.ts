@@ -25,7 +25,7 @@ export const useUsersSearchInfiniteScroll = (condition: UserLoginCondition, q: s
     const [fetching, setFetching] = useState(false)
     const [page, setPage] = useState(1)
     const scrollHandler = (e: any) => {
-        if (e.target.documentElement.scrollHeight - (window.innerHeight + e.target.documentElement.scrollTop) < 700 && usersLength < totalCount && condition !== UserLoginCondition.loading) {
+        if (e.target.documentElement.scrollHeight - (window.innerHeight + e.target.documentElement.scrollTop) < 1500 && usersLength < totalCount && condition !== UserLoginCondition.loading) {
             setFetching(true)
         }
     }

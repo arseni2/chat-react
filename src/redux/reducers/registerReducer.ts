@@ -53,4 +53,4 @@ const RegisterSlice = createSlice({
     }
 })
 
-export const register_reducer = RegisterSlice.reducer
+export const registerReducer = RegisterSlice.reducer

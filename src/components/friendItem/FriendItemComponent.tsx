@@ -1,46 +1,55 @@
+import { Avatar, Divider, Grid, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import React from 'react';
-import {Avatar, Divider, Grid, Typography} from "@mui/material";
-import {makeStyles} from "@mui/styles";
-import {userType} from "../../redux/reducers/authReducer";
+import { useDispatch } from 'react-redux';
+import { userType } from "../../redux/reducers/authReducer";
+import { createDialogsThunk } from '../../redux/reducers/dialogReducer';
+import { AppDispatchType } from '../../redux/store';
+import { OnlineComponent } from '../online/OnlineComponent';
 
 
-const useStyles = makeStyles((theme)=>({
-        message_text: {
-            color: '#667182',
-            display: 'flex',
-            alignItems: 'center'
+const useStyles = makeStyles((theme) => ({
+    message_text: {
+        color: '#667182',
+        display: 'flex',
+        alignItems: 'center'
+    },
+    message_name: {
+        fontWeight: 700,
+        fontFamily: 'Robotot',
+        margin: 0,
+    },
+    message_time: {
+        color: '#667182',
+        paddingRight: 15,
+        paddingTop: 5
+    },
+    container: {
+        marginTop: 10,
+        transition: 'background .3s',
+        '&:hover': {
+            background: '#eaeaea'
         },
-        message_name: {
-            fontWeight: 700,
-            fontFamily: 'Robotot',
-            margin: 0,
-        },
-        message_time: {
-            color: '#667182',
-            paddingRight: 15,
-            paddingTop: 5
-        },
-        container: {
-            marginTop: 10,
-            transition: 'background .3s',
-            '&:hover': {
-                background: '#eaeaea'
-            },
-            cursor: 'pointer',
-        },
-    }
+        cursor: 'pointer',
+    },
+}
 ))
-function hasWhiteSpace(s: string) {
-    return s.indexOf(' ') >= 0;
+export function hasWhiteSpace(s: null | string ) {
+    if(s) {
+        return s.indexOf(' ') >= 0;
+    } else {
+        return false
+    }
 }// вынести куда-нибудь
 const FriendItemComponent = (props: userType) => {
+    const dispatch = useDispatch<AppDispatchType>()
     const classes = useStyles()
     return (
         <Grid className={classes.container}>
-            <Divider style={{marginBottom: 5}}/>
-            <Grid style={{display: 'flex'}}>
+            <Divider style={{ marginBottom: 5 }} />
+            <Grid style={{ display: 'flex' }} onClick={()=>{dispatch(createDialogsThunk({user_id: props._id}))}}>
                 <Grid>
-                    <Avatar src={hasWhiteSpace(props.avatar) ? 'default image' : 'url to image'} style={{width: 50, height: 50}}>
+                    <Avatar src={hasWhiteSpace(props.avatar) ? 'default image' : `http://localhost:8000/uploads/userImages/${props.avatar}`} style={{ width: 50, height: 50 }}>
 
                     </Avatar>
                 </Grid>
@@ -53,15 +62,13 @@ const FriendItemComponent = (props: userType) => {
                             </p>
                         </Typography>
                         <Typography className={classes.message_text}>
-                            online
-                            <div style={{width: 7, height: 7, background: '#42FF00', marginLeft: 10, borderRadius: 100}}>
-                            </div>
+                            <OnlineComponent isOnline={props.isOnline} />
                         </Typography>
                     </Grid>
                 </Grid>
             </Grid>
-            <Divider style={{marginTop: 5}}/>
-        </Grid>
+            <Divider style={{ marginTop: 5 }} />
+        </Grid >
     );
 };
 

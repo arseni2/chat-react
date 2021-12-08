@@ -48,4 +48,4 @@ const loginSlice = createSlice({
     }
 })
 
-export const login_reducer = loginSlice.reducer
+export const loginReducer = loginSlice.reducer

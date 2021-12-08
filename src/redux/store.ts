@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { AuthReducer } from "./reducers/authReducer";
-import { login_reducer } from "./reducers/loginReducer";
-import { register_reducer } from "./reducers/registerReducer";
+import { DialogsReducer } from './reducers/dialogReducer';
+import { loginReducer } from "./reducers/loginReducer";
+import { registerReducer } from "./reducers/registerReducer";
 import { UsersReducer } from "./reducers/usersReducer";
+import {ChatReducer} from "./reducers/chatReducer";
 
 export const store = configureStore({
-    reducer: {login_reducer, AuthReducer, register_reducer, UsersReducer}, //make rename
+    reducer: {loginReducer, AuthReducer, registerReducer, UsersReducer, DialogsReducer, ChatReducer},
 })
 //@ts-ignore
 window.store = store
